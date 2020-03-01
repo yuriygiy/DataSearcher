@@ -9,11 +9,12 @@ class SearchEngine
     result = []
 
     searched_elements.each do |entry|
-      # Define bitwise operator for perform   data block
+      # Define bitwise operator for perform include/exclude param for search
       operator = entry.start_with?('--') ? :- : :&
       result << { operator => get_match_data(entry.delete('--')) }
     end
-
+    # Combines all data blocs with specific option
+    # used send for use operator dynamically
     result.reduce(@data) do |product, n|
       search_type = n.keys[0]
       product.send(search_type, n[search_type])
@@ -27,6 +28,7 @@ class SearchEngine
   end
 
   def get_match_data(entry)
+    # Getting elements for searching argument
     @data.select do |elem|
       elem.values.flatten.select { |el| el.strip.upcase.match(/\b#{entry}\b/) }.any?
     end
