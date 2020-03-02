@@ -11,7 +11,8 @@ class SearchEngine
     searched_elements.each do |entry|
       # Define bitwise operator for perform include/exclude param for search
       operator = entry.start_with?('--') ? :- : :&
-      result << { operator => get_match_data(entry.delete('--')) }
+      entry.slice!('--')
+      result << { operator => get_match_data(entry) }
     end
     # Combines all data blocs with specific option
     # used send for use operator dynamically
@@ -29,6 +30,8 @@ class SearchEngine
 
   def get_match_data(entry)
     # Getting elements for searching argument
+    # TODO: implement more complex logic within pattern interpolation
+    # current logic wrong process chars, which reserved for regex patterns e.q. C#, P.
     @data.select do |elem|
       elem.values.flatten.select { |el| el.strip.upcase.match(/\b#{entry}\b/) }.any?
     end
