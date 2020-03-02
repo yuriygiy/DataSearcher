@@ -1,5 +1,7 @@
 class SearchEngine
 
+  NEG_SEARCH_ARG = '--'.freeze
+
   def initialize(data)
     @data = data
   end
@@ -10,8 +12,9 @@ class SearchEngine
 
     searched_elements.each do |entry|
       # Define bitwise operator for perform include/exclude param for search
-      operator = entry.start_with?('--') ? :- : :&
-      result << { operator => get_match_data(entry.delete('--')) }
+      operator = entry.start_with?(NEG_SEARCH_ARG) ? :- : :&
+      entry.slice!(NEG_SEARCH_ARG)
+      result << { operator => get_match_data(entry) }
     end
     # Combines all data blocs with specific option
     # used send for use operator dynamically
