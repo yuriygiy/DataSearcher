@@ -32,7 +32,7 @@ class SearchEngine
 
   def get_match_data(entry)
     # Getting all elements for searching argument for matching pattern
-    match_regexp = /\b#{Regexp.escape("#{entry}")}/
+    match_regexp = /\b#{Regexp.escape(entry)}/
     @data.select do |elem|
       elem.values.flatten.select { |el| el.strip.upcase.match(match_regexp) }.any?
     end
